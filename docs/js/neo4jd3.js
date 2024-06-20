@@ -270,7 +270,7 @@ function Neo4jD3(_selector, _options) {
                    })
                    .html(function(d) {
                        var _icon = icon(d);
-                       return d.properties.name;
+                       return d.properties;
                    });
     }
 
