@@ -21,6 +21,8 @@ function Neo4jD3(_selector, _options) {
             highlight: undefined,
             iconMap: fontAwesomeIcons(),
             icons: undefined,
+            //节点是否显示节点属性
+            showLabel:false,
             imageMap: {},
             images: undefined,
             infoPanel: true,
@@ -195,7 +197,9 @@ function Neo4jD3(_selector, _options) {
         appendRingToNode(n);
         appendOutlineToNode(n);
 
-        if (options.icons) {
+        if (options.showLabel) {
+            appendLabelToNode(n);
+        }else if (options.icons) {
             appendTextToNode(n);
         }
 
@@ -247,6 +251,26 @@ function Neo4jD3(_selector, _options) {
                    .html(function(d) {
                        var _icon = icon(d);
                        return _icon ? '&#x' + _icon : d.id;
+                   });
+    }
+
+    function appendLabelToNode(node) {
+        return node.append('text')
+                   .attr('class', function(d) {
+                       return 'text' + (icon(d) ? ' icon' : '');
+                   })
+                   .attr('fill', '#ffffff')
+                   .attr('font-size', function(d) {
+                       return icon(d) ? (options.nodeRadius + 'px') : '10px';
+                   })
+                   .attr('pointer-events', 'none')
+                   .attr('text-anchor', 'middle')
+                   .attr('y', function(d) {
+                       return icon(d) ? (parseInt(Math.round(options.nodeRadius * 0.32)) + 'px') : '4px';
+                   })
+                   .html(function(d) {
+                       var _icon = icon(d);
+                       return d.properties["name"];
                    });
     }
 
